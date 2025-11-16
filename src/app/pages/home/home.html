@@ -1,0 +1,210 @@
+<!-- Fixed Navigation (Top Bar from Figma) -->
+<nav class="navbar navbar-expand-lg navbar-light bg-white shadow-sm fixed-top">
+  <div class="container">
+    <a class="navbar-brand fw-bold text-primary fs-3" href="/">RealEstate Pro</a>
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarNav">
+      <ul class="navbar-nav me-auto">
+        <li class="nav-item"><a class="nav-link" href="/">Home</a></li>
+        <li class="nav-item"><a class="nav-link" href="/buy">Buy</a></li>
+        <li class="nav-item"><a class="nav-link" href="/rent">Rent</a></li>
+        <li class="nav-item"><a class="nav-link" href="/sell">Sell</a></li>
+        <li class="nav-item"><a class="nav-link" href="/about">About</a></li>
+      </ul>
+      <ul class="navbar-nav">
+        <li class="nav-item"><a class="nav-link" href="/favorites">Favorites</a></li>
+        <li class="nav-item"><a class="nav-link btn btn-outline-primary ms-2" href="/login">Login</a></li>
+      </ul>
+    </div>
+  </div>
+</nav>
+
+<!-- Hero Section (Full-Width Banner with Search Overlay from Figma) -->
+<section class="hero position-relative bg-dark text-white" style="background-image: url('https://images.unsplash.com/photo-1560448204-e02f11c3d0e2?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2070&q=80'); background-size: cover; background-position: center; height: 80vh;">
+  <div class="hero-overlay position-absolute top-0 start-0 w-100 h-100" style="background: rgba(0,0,0,0.5);"></div>
+  <div class="container position-relative h-100 d-flex align-items-center">
+    <div class="row w-100">
+      <div class="col-lg-6">
+        <h1 class="display-4 fw-bold mb-4">Find Your Perfect Property</h1>
+        <p class="lead mb-4">Discover homes that match your lifestyle. From luxury villas to cozy apartments.</p>
+        <a href="/about" class="btn btn-primary btn-lg px-4">Learn More About Us</a>
+      </div>
+      <div class="col-lg-6">
+        <!-- Advanced Search Bar (Exact Figma Layout: 5 Fields + Buttons) -->
+        <div class="card bg-white text-dark shadow-lg border-0">
+          <div class="card-body p-4">
+            <h5 class="fw-bold mb-3">Search Properties</h5>
+            <form (ngSubmit)="onSearch()" class="row g-3">
+              <div class="col-md-4">
+                <label class="form-label fw-bold small">Location</label>
+                <input type="text" class="form-control" [(ngModel)]="searchForm.location" name="location" placeholder="Enter city or zip">
+              </div>
+              <div class="col-md-2">
+                <label class="form-label fw-bold small">Type</label>
+                <select class="form-select" [(ngModel)]="searchForm.propertyType" name="propertyType">
+                  <option value="">Any</option>
+                  <option value="house">House</option>
+                  <option value="apartment">Apartment</option>
+                  <option value="condo">Condo</option>
+                </select>
+              </div>
+              <div class="col-md-2">
+                <label class="form-label fw-bold small">Beds</label>
+                <select class="form-select" [(ngModel)]="searchForm.bedrooms" name="bedrooms">
+                  <option value="">Any</option>
+                  <option value="1">1+</option>
+                  <option value="2">2+</option>
+                  <option value="3">3+</option>
+                  <option value="4">4+</option>
+                </select>
+              </div>
+              <div class="col-md-2">
+                <label class="form-label fw-bold small">Price</label>
+                <select class="form-select" [(ngModel)]="searchForm.priceRange" name="priceRange">
+                  <option value="">Any</option>
+                  <option value="0-300000">$0 - $300K</option>
+                  <option value="300000-700000">$300K - $700K</option>
+                  <option value="700000+">$700K+</option>
+                </select>
+              </div>
+              <div class="col-md-2">
+                <label class="form-label fw-bold small">For</label>
+                <div class="form-check">
+                  <input class="form-check-input" type="radio" id="sale" name="type" value="sale" [(ngModel)]="searchForm.type">
+                  <label class="form-check-label small" for="sale">Sale</label>
+                </div>
+                <div class="form-check">
+                  <input class="form-check-input" type="radio" id="rent" name="type" value="rent" [(ngModel)]="searchForm.type">
+                  <label class="form-check-label small" for="rent">Rent</label>
+                </div>
+              </div>
+              <div class="col-12">
+                <button type="submit" class="btn btn-warning w-100 fw-bold py-2">Search Now</button>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Featured Properties Grid (3-Column from Figma) -->
+<section class="py-5 bg-light">
+  <div class="container">
+    <div class="row justify-content-center mb-5">
+      <div class="col-lg-8 text-center">
+        <h2 class="display-5 fw-bold mb-3">Featured Properties</h2>
+        <p class="text-muted lead">Explore our top listings across the country</p>
+      </div>
+    </div>
+    <div class="row g-4" *ngIf="!loading; else loadingSpinner">
+      <div class="col-lg-4 col-md-6" *ngFor="let house of featuredHouses">
+        <div class="card h-100 border-0 shadow-sm">
+          <img [src]="house.image || 'https://via.placeholder.com/400x250?text=Property'" class="card-img-top" style="height: 200px; object-fit: cover;" [alt]="house.title">
+          <div class="card-body">
+            <div class="d-flex justify-content-between align-items-start mb-2">
+              <span class="badge bg-primary">{{ house.type === 'rent' ? 'Rent' : 'Sale' }}</span>
+              <button class="btn btn-link p-0 ms-auto" (click)="toggleFavorite(house)">
+                <i class="bi" [class]="house.isFavorite ? 'bi-heart-fill text-danger' : 'bi-heart'"></i>
+              </button>
+            </div>
+            <h5 class="card-title fw-bold">{{ house.title }}</h5>
+            <p class="text-muted">{{ house.location }}</p>
+            <ul class="list-unstyled mb-3">
+              <li class="d-flex justify-content-between">
+                <span><i class="bi bi-bed text-muted"></i> {{ house.beds }} Beds</span>
+                <span><i class="bi bi-bath text-muted"></i> {{ house.baths }} Baths</span>
+              </li>
+              <li class="d-flex justify-content-between">
+                <span><i class="bi bi-rulers text-muted"></i> {{ house.sqft }} sqft</span>
+                <span class="fw-bold text-success">{{ getPriceLabel(house) }}</span>
+              </li>
+            </ul>
+            <a [routerLink]="['/property', house.id]" class="btn btn-outline-primary w-100">View Details</a>
+          </div>
+        </div>
+      </div>
+    </div>
+    <ng-template #loadingSpinner>
+      <div class="text-center py-5">
+        <div class="spinner-border text-primary" role="status"></div>
+        <p class="mt-3">Loading properties...</p>
+      </div>
+    </ng-template>
+    <div class="text-center mt-5">
+      <a routerLink="/properties" class="btn btn-primary btn-lg px-5">View All Properties</a>
+    </div>
+  </div>
+</section>
+
+<!-- Trust Badges / Stats Section (Bottom of Hero in Figma) -->
+<section class="py-4 bg-white">
+  <div class="container">
+    <div class="row text-center g-4">
+      <div class="col-md-3">
+        <h3 class="text-primary">10K+</h3>
+        <p class="text-muted">Properties Listed</p>
+      </div>
+      <div class="col-md-3">
+        <h3 class="text-primary">500+</h3>
+        <p class="text-muted">Happy Clients</p>
+      </div>
+      <div class="col-md-3">
+        <h3 class="text-primary">98%</h3>
+        <p class="text-muted">Success Rate</p>
+      </div>
+      <div class="col-md-3">
+        <h3 class="text-primary">24/7</h3>
+        <p class="text-muted">Support</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- About / CTA Section (Simple from Figma) -->
+<section class="py-5">
+  <div class="container">
+    <div class="row align-items-center">
+      <div class="col-lg-6">
+        <img src="https://images.unsplash.com/photo-1564013799919-ab600027ffc6?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80" alt="About Us" class="img-fluid rounded shadow">
+      </div>
+      <div class="col-lg-6">
+        <h2 class="fw-bold mb-3">Why Choose RealEstate Pro?</h2>
+        <p class="text-muted mb-4">With expert agents and a vast network, we make your dream home a reality. Trusted by thousands.</p>
+        <a href="/contact" class="btn btn-primary px-4">Get In Touch</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Footer (Standard from Figma) -->
+<footer class="bg-dark text-white py-5">
+  <div class="container">
+    <div class="row">
+      <div class="col-md-4 mb-4">
+        <h5>RealEstate Pro</h5>
+        <p class="text-muted">Your trusted partner in real estate.</p>
+      </div>
+      <div class="col-md-4 mb-4">
+        <h6>Quick Links</h6>
+        <ul class="list-unstyled">
+          <li><a href="/" class="text-muted text-decoration-none">Home</a></li>
+          <li><a href="/buy" class="text-muted text-decoration-none">Buy</a></li>
+          <li><a href="/rent" class="text-muted text-decoration-none">Rent</a></li>
+          <li><a href="/about" class="text-muted text-decoration-none">About</a></li>
+        </ul>
+      </div>
+      <div class="col-md-4 mb-4">
+        <h6>Contact</h6>
+        <p class="text-muted">Email: info@realestatepro.com<br>Phone: +1 (555) 123-4567</p>
+      </div>
+    </div>
+    <hr class="border-secondary">
+    <div class="text-center text-muted">
+      &copy; 2025 RealEstate Pro. All rights reserved.
+    </div>
+  </div>
+</footer>
