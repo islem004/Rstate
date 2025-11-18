@@ -4,11 +4,12 @@ import { FormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
 import { Subject, takeUntil } from 'rxjs';
 
-import { HouseService } from '../../services/house';
-import { FavoriteService } from '../../services/fav';
-import { UserService } from '../../services/user';
+import { HouseService } from '../../services/house.service';
+import { FavoriteService } from '../../services/fav.service';
+import { UserService } from '../../services/user.service';
 import { House } from '../../models/house.model';
 import { User } from '../../models/user.model';
+
 
 @Component({
   selector: 'app-home',
@@ -19,18 +20,16 @@ import { User } from '../../models/user.model';
 })
 export class HomeComponent implements OnInit, OnDestroy {
   private destroy$ = new Subject<void>();
-
   featuredHouses: House[] = [];
   loading = true;
-  currentUser: User | null = null;
   userId: number | null = null;
 
+  // Figma-inspired search form (4 fields + buy/rent radio)
   searchForm = {
     location: '',
-    propertyType: '',
-    bedrooms: '',
+    propertyType: '',  
     priceRange: '',
-    type: 'sale'
+    type: 'sale' as 'sale' | 'rent'
   };
 
   constructor(
@@ -40,7 +39,7 @@ export class HomeComponent implements OnInit, OnDestroy {
   ) {}
 
   ngOnInit(): void {
-    this.checkLoggedInUser();
+    this.checkUser();
     this.loadFeaturedHouses();
   }
 
@@ -49,37 +48,40 @@ export class HomeComponent implements OnInit, OnDestroy {
     this.destroy$.complete();
   }
 
-  private checkLoggedInUser(): void {
+  private checkUser() {
     const saved = localStorage.getItem('currentUser');
-    if (saved) {
-      try {
-        this.currentUser = JSON.parse(saved);
-        this.userId = this.currentUser?.id ?? null;
-      } catch (e) {
-        localStorage.removeItem('currentUser');
-        this.currentUser = null;
-        this.userId = null;
-      }
-    } else {
-      this.currentUser = null;
-      this.userId = null;
-    }
+    if (saved) this.userId = JSON.parse(saved)?.id ?? null;
   }
 
   loadFeaturedHouses(): void {
     this.houseService.getHouses().subscribe({
       next: (houses) => {
-        this.featuredHouses = houses.slice(0, 6); // First 6 as per Figma grid
+        this.featuredHouses = houses.slice(0, 6);
         if (this.userId) {
           this.featuredHouses.forEach(house => {
-            this.favService.isFavorite(this.userId!, house.id!).pipe(takeUntil(this.destroy$)).subscribe(isFav => {
-              house.isFavorite = isFav;
-            });
+            this.favService.isFavorite(this.userId!, house.id!).pipe(takeUntil(this.destroy$)).subscribe(isFav => house.isFavorite = isFav);
           });
         }
         this.loading = false;
       },
-      error: () => this.loading = false
+      error: () => {
+        this.loading = false;
+        // Fallback demo data if API fails
+        this.featuredHouses = [
+          {
+            id: 1, title: 'Luxury Villa', location: 'Tunis', price: 1250000, beds: 5, baths: 4, sqft: 4200, type: 'sale', image: 'https://via.placeholder.com/400x300?text=Villa', isFavorite: false,
+            description: '',
+            ownerId: 0,
+            bathrooms: undefined
+          },
+          {
+            id: 2, title: 'Modern Apartment', location: 'Sousse', price: 350000, beds: 3, baths: 2, sqft: 1500, type: 'rent', image: 'https://via.placeholder.com/400x300?text=Apartment', isFavorite: true,
+            description: '',
+            ownerId: 0,
+            bathrooms: undefined
+          }
+        ];
+      }
     });
   }
 
@@ -90,9 +92,7 @@ export class HomeComponent implements OnInit, OnDestroy {
     }
     if (house.isFavorite) {
       this.favService.checkFavorite(this.userId!, house.id!).subscribe(favs => {
-        if (favs.length > 0) {
-          this.favService.removeFavorite(favs[0].id).subscribe(() => house.isFavorite = false);
-        }
+        if (favs.length > 0) this.favService.removeFavorite(favs[0].id).subscribe(() => house.isFavorite = false);
       });
     } else {
       this.favService.addFavorite(this.userId!, house.id!).subscribe(() => house.isFavorite = true);
@@ -103,14 +103,12 @@ export class HomeComponent implements OnInit, OnDestroy {
     const params = new URLSearchParams();
     if (this.searchForm.location) params.append('location', this.searchForm.location);
     if (this.searchForm.propertyType) params.append('type', this.searchForm.propertyType);
-    if (this.searchForm.bedrooms) params.append('beds_gte', this.searchForm.bedrooms);
     if (this.searchForm.priceRange) params.append('price', this.searchForm.priceRange);
     params.append('searchType', this.searchForm.type);
-    window.location.href = `/properties?${params.toString()}`;
+    window.location.href = `/search?${params.toString()}`;
   }
 
-  getPriceLabel(house: House): string {
-    const formatted = new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' }).format(house.price);
-    return house.type === 'rent' ? `${formatted}/mo` : formatted;
+  formatPrice(house: House): string {
+    return house.type === 'rent' ? `$${house.price}/mo` : `$${house.price}`;
   }
 }

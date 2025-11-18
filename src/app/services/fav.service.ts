@@ -5,7 +5,7 @@ import { map } from 'rxjs/operators';
 
 @Injectable({ providedIn: 'root' })
 export class FavoriteService {
-  private apiUrl = 'http://localhost:3000/favorites';
+  private apiUrl = 'http://localhost:4000/favorites';
 
   constructor(private http: HttpClient) {}
 

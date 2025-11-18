@@ -1,7 +1,7 @@
 export class House {
   id?: number;
   title?: string;
-  price!: number;
+  price?: number;
   location!: string;
   description!: string;
   image!: string;
@@ -11,4 +11,5 @@ baths: any;
 beds: any;
 isFavorite: any;
 type: string | undefined;
+bathrooms: any;
 }
