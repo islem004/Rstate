@@ -1,15 +1,11 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { RouterModule } from '@angular/router';
-import { Subject, takeUntil } from 'rxjs';
-
+import { RouterModule, Router } from '@angular/router';
+import { Subject } from 'rxjs';
 import { HouseService } from '../../services/house.service';
 import { FavoriteService } from '../../services/fav.service';
-import { UserService } from '../../services/user.service';
 import { House } from '../../models/house.model';
-import { User } from '../../models/user.model';
-
 
 @Component({
   selector: 'app-home',
@@ -24,10 +20,9 @@ export class HomeComponent implements OnInit, OnDestroy {
   loading = true;
   userId: number | null = null;
 
-  // Figma-inspired search form (4 fields + buy/rent radio)
   searchForm = {
     location: '',
-    propertyType: '',  
+    propertyType: '',
     priceRange: '',
     type: 'sale' as 'sale' | 'rent'
   };
@@ -35,7 +30,7 @@ export class HomeComponent implements OnInit, OnDestroy {
   constructor(
     private houseService: HouseService,
     private favService: FavoriteService,
-    private userService: UserService
+    private router: Router
   ) {}
 
   ngOnInit(): void {
@@ -57,55 +52,46 @@ export class HomeComponent implements OnInit, OnDestroy {
     this.houseService.getHouses().subscribe({
       next: (houses) => {
         this.featuredHouses = houses.slice(0, 6);
-        if (this.userId) {
-          this.featuredHouses.forEach(house => {
-            this.favService.isFavorite(this.userId!, house.id!).pipe(takeUntil(this.destroy$)).subscribe(isFav => house.isFavorite = isFav);
-          });
-        }
         this.loading = false;
       },
       error: () => {
         this.loading = false;
-        // Fallback demo data if API fails
-        this.featuredHouses = [
-          {
-            id: 1, title: 'Luxury Villa', location: 'Tunis', price: 1250000, beds: 5, baths: 4, sqft: 4200, type: 'sale', image: 'https://via.placeholder.com/400x300?text=Villa', isFavorite: false,
-            description: '',
-            ownerId: 0,
-            bathrooms: undefined
-          },
-          {
-            id: 2, title: 'Modern Apartment', location: 'Sousse', price: 350000, beds: 3, baths: 2, sqft: 1500, type: 'rent', image: 'https://via.placeholder.com/400x300?text=Apartment', isFavorite: true,
-            description: '',
-            ownerId: 0,
-            bathrooms: undefined
-          }
-        ];
+        this.featuredHouses = [];
       }
     });
   }
 
   toggleFavorite(house: House): void {
     if (!this.userId) {
-      alert('Please login to save favorites');
+      this.showToast('Please login to save favorites', 'danger');
       return;
     }
-    if (house.isFavorite) {
-      this.favService.checkFavorite(this.userId!, house.id!).subscribe(favs => {
-        if (favs.length > 0) this.favService.removeFavorite(favs[0].id).subscribe(() => house.isFavorite = false);
-      });
-    } else {
-      this.favService.addFavorite(this.userId!, house.id!).subscribe(() => house.isFavorite = true);
-    }
+
+    house.isFavorite = !house.isFavorite;
+    const message = house.isFavorite ? 'Added to favorites ❤️' : 'Removed from favorites 💔';
+    this.showToast(message, 'primary');
+  }
+
+  showToast(message: string, type: 'primary' | 'danger' = 'primary') {
+    const toastEl = document.getElementById('favoriteToast');
+    if (!toastEl) return;
+
+    const toastBody = toastEl.querySelector('.toast-body') as HTMLElement;
+    toastBody.textContent = message;
+    toastEl.className = `toast align-items-center text-white bg-${type} border-0`;
+
+    const bsToast = new (window as any).bootstrap.Toast(toastEl);
+    bsToast.show();
   }
 
   onSearch(): void {
-    const params = new URLSearchParams();
-    if (this.searchForm.location) params.append('location', this.searchForm.location);
-    if (this.searchForm.propertyType) params.append('type', this.searchForm.propertyType);
-    if (this.searchForm.priceRange) params.append('price', this.searchForm.priceRange);
-    params.append('searchType', this.searchForm.type);
-    window.location.href = `/search?${params.toString()}`;
+    const queryParams = new URLSearchParams();
+    if (this.searchForm.location) queryParams.set('location', this.searchForm.location);
+    if (this.searchForm.propertyType) queryParams.set('propertyType', this.searchForm.propertyType);
+    if (this.searchForm.priceRange) queryParams.set('priceRange', this.searchForm.priceRange);
+    if (this.searchForm.type) queryParams.set('type', this.searchForm.type);
+
+    window.location.href = `/properties?${queryParams.toString()}`;
   }
 
   formatPrice(house: House): string {

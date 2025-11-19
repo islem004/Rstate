@@ -1,0 +1,109 @@
+<!-- Navbar -->
+<nav class="navbar navbar-expand-lg navbar-light bg-white shadow-sm fixed-top">
+  <div class="container">
+    <a class="navbar-brand fw-bold fs-3 text-primary d-flex align-items-center gap-2" href="/">
+      <i class="bi bi-house-door-fill"></i> Rstate
+    </a>
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarNav">
+      <ul class="navbar-nav mx-auto">
+        <li class="nav-item"><a class="nav-link fw-medium active" href="/">Home</a></li>
+        <li class="nav-item"><a class="nav-link fw-medium" routerLink="/properties">Properties</a></li>
+        <li class="nav-item"><a class="nav-link fw-medium" href="#">About</a></li>
+        <li class="nav-item"><a class="nav-link fw-medium" href="#">Contact</a></li>
+      </ul>
+      <div class="d-flex gap-2">
+        <a routerLink="/login" class="btn btn-outline-primary rounded-pill px-4">Login</a>
+        <a routerLink="/signup" class="btn btn-primary rounded-pill px-4">Sign Up</a>
+      </div>
+    </div>
+  </div>
+</nav>
+
+<!-- Main Section -->
+<section class="py-5 bg-light min-vh-100" style="padding-top: 100px;">
+  <div class="container">
+
+    <!-- Notification -->
+    <div *ngIf="notification.show" 
+         class="alert alert-{{ notification.type }} alert-dismissible fade show mb-4" 
+         role="alert">
+      {{ notification.message }}
+      <button type="button" class="btn-close" aria-label="Close" (click)="notification.show=false"></button>
+    </div>
+
+    <h1 class="display-5 text-center fw-light mb-5">All Properties</h1>
+
+    <!-- Filters Card -->
+    <div class="card shadow-lg rounded-4 p-4 mb-5 bg-white">
+      <div class="row g-3">
+        <div class="col-md-3">
+          <input type="text" class="form-control rounded-pill py-3 shadow-sm"
+                 [(ngModel)]="filters.location" (input)="applyFilters()"
+                 placeholder="Enter location">
+        </div>
+        <div class="col-md-3">
+          <select class="form-select rounded-pill py-3 shadow-sm"
+                  [(ngModel)]="filters.propertyType" (change)="applyFilters()">
+            <option value="">Property Type</option>
+            <option value="villa">Villa</option>
+            <option value="apartment">Apartment</option>
+            <option value="house">House</option>
+            <option value="studio">Studio</option>
+            <option value="penthouse">Penthouse</option>
+          </select>
+        </div>
+        <div class="col-md-3">
+          <select class="form-select rounded-pill py-3 shadow-sm"
+                  [(ngModel)]="filters.priceRange" (change)="applyFilters()">
+            <option value="">Price Range</option>
+            <option value="0-1000000">Up to $1M</option>
+            <option value="1000000-3000000">$1M - $3M</option>
+            <option value="3000000+">Over $3M</option>
+          </select>
+        </div>
+        <div class="col-md-3 d-flex gap-2">
+          <select class="form-select rounded-pill py-3 shadow-sm"
+                  [(ngModel)]="filters.type" (change)="applyFilters()">
+            <option value="">Sale / Rent</option>
+            <option value="sale">Buy</option>
+            <option value="rent">Rent</option>
+          </select>
+          <button class="btn btn-outline-secondary rounded-pill px-4" (click)="clearFilters()">Clear</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Properties Grid -->
+    <div *ngIf="loading" class="text-center">Loading...</div>
+    <div *ngIf="!loading && filteredHouses.length === 0" class="text-center text-muted">
+      No properties found.
+    </div>
+
+    <div class="row g-4">
+      <div class="col-md-4" *ngFor="let house of filteredHouses">
+        <div class="card shadow-sm h-100">
+          <img [src]="house.image" class="card-img-top" alt="house" style="height: 220px; object-fit: cover;">
+          <div class="card-body">
+            <h5 class="card-title">{{ house.title }}</h5>
+            <p class="card-text">{{ house.location }}</p>
+            <p class="fw-bold">${{ house.price | number }}</p>
+            <button class="btn btn-primary w-100" (click)="viewDetails(house.id)">
+              View Details
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- Footer -->
+<footer class="bg-dark text-white py-4 text-center mt-5">
+  <div class="container">
+    <p class="mb-0">© 2025 Rstate.tn — Made with love in Tunisia</p>
+  </div>
+</footer>

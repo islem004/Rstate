@@ -4,5 +4,5 @@ export class User {
   email!: string;
   password!: string;
   phone!: string;
-  role!: "buyer" | "seller" | "admin";
+  role!: "user" | "admin";
 }

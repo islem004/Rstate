@@ -1,0 +1,32 @@
+<section class="auth-container d-flex justify-content-center align-items-center">
+  <div class="card shadow p-5 rounded-4 text-center" style="width: 420px;">
+    
+    <h2 class="fw-light mb-4">Create Account</h2>
+
+    <!-- Notification message inside the card -->
+    <div *ngIf="message" class="alert alert-success">
+      {{ message }}
+    </div>
+
+    <form (submit)="onSignup(); $event.preventDefault()">
+
+      <input type="text" class="form-control rounded-pill py-3 mb-3"
+             placeholder="Full Name" [(ngModel)]="name" name="name" required>
+
+      <input type="email" class="form-control rounded-pill py-3 mb-3"
+             placeholder="Email" [(ngModel)]="email" name="email" required>
+
+      <input type="password" class="form-control rounded-pill py-3 mb-4"
+             placeholder="Password" [(ngModel)]="password" name="password" required>
+
+      <button class="btn btn-primary rounded-pill w-100 py-3 mb-3">
+        Create Account
+      </button>
+    </form>
+
+    <p class="text-muted">
+      Already have an account?
+      <a routerLink="/login" class="text-primary fw-semibold">Login</a>
+    </p>
+  </div>
+</section>

@@ -1,0 +1,117 @@
+<section class="py-5 bg-light min-vh-100" *ngIf="!loading; else loadingTemplate">
+  <div class="container">
+    <!-- Back Button -->
+    <a routerLink="/properties" class="text-primary mb-4 d-inline-block">
+      ← Back to Properties
+    </a>
+
+    <div class="row g-5">
+      <!-- Large Image -->
+      <div class="col-lg-8">
+        <img [src]="house.image" class="img-fluid rounded-4 shadow-lg w-100" 
+             style="height: 520px; object-fit: cover;" alt="{{house.title}}">
+      </div>
+
+      <!-- Side Card -->
+      <div class="col-lg-4">
+        <div class="card shadow-lg rounded-4 border-0 sticky-top" style="top: 100px;">
+          <div class="card-body p-4">
+            <div class="d-flex justify-content-between align-items-start mb-3">
+              <span class="badge rounded-pill px-4 py-2 fs-6 fw-bold"
+                    [class.bg-primary]="house.type === 'sale'"
+                    [class.bg-info]="house.type === 'rent'">
+                {{ house.type === 'rent' ? 'For Rent' : 'For Sale' }}
+              </span>
+              <button class="btn btn-white rounded-circle shadow p-2">
+                <i class="bi bi-heart fs-4"></i>
+              </button>
+            </div>
+
+            <h2 class="fw-bold mt-3">{{ house.title }}</h2>
+            <p class="text-muted fs-5">
+              <i class="bi bi-geo-alt-fill"></i> {{ house.location }}
+            </p>
+
+            <h1 class="text-primary fw-bold display-5">
+              ${{ house.price | number }}
+              <span class="text-muted fs-5 fw-normal" *ngIf="house.type === 'rent'">/month</span>
+            </h1>
+
+            <div class="d-flex gap-4 my-4 text-center">
+              <div class="flex-fill">
+                <i class="bi bi-bed fs-3 text-primary"></i><br>
+                <strong class="fs-4">{{ house.beds || '-' }}</strong> Beds
+              </div>
+              <div class="flex-fill">
+                <i class="bi bi-droplet fs-3 text-primary"></i><br>
+                <strong class="fs-4">{{ house.baths || '-' }}</strong> Baths
+              </div>
+              <div class="flex-fill">
+                <i class="bi bi-arrows-angle-expand fs-3 text-primary"></i><br>
+                <strong class="fs-4">{{ house.sqft || '-' }}</strong> sqft
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Description + Agent Info (Logged in only) -->
+    <div class="row mt-5">
+      <div class="col-12">
+        <div class="card shadow-lg rounded-4 border-0">
+          <div class="card-body p-5">
+
+            <div *ngIf="auth.isLoggedIn(); else loginRequired">
+              <h3 class="fw-bold mb-4">Property Description</h3>
+              <p class="lead text-muted fs-5">{{ house.description }}</p>
+
+              <div class="alert alert-info mt-5 p-4 rounded-4">
+                <h5 class="fw-bold"><i class="bi bi-person-fill"></i> Contact Agent</h5>
+                <p class="mb-2"><strong>{{ house.agent || '-' }}</strong></p>
+                
+                <p class="mb-2">
+                  <i class="bi bi-telephone-fill text-primary"></i>
+                  <span class="fw-semibold">{{ house.phone || '-' }}</span>
+                </p>
+
+                <a *ngIf="house.whatsapp" 
+                   [href]="'https://wa.me/' + house.whatsapp" 
+                   target="_blank" 
+                   class="btn btn-success rounded-pill px-4 mt-2">
+                  <i class="bi bi-whatsapp fs-5"></i> Message on WhatsApp
+                </a>
+              </div>
+
+              <a *ngIf="house.mapLink" 
+                 [href]="house.mapLink" 
+                 target="_blank" 
+                 class="btn btn-outline-primary rounded-pill px-5 mt-3">
+                <i class="bi bi-map"></i> View on Google Maps
+              </a>
+            </div>
+
+            <ng-template #loginRequired>
+              <div class="text-center py-5">
+                <i class="bi bi-lock-fill display-1 text-warning mb-4"></i>
+                <h3>You need to login to see full details</h3>
+                <p class="text-muted lead">Join Rstate to contact agents and view complete property information</p>
+                <div class="mt-4">
+                  <a routerLink="/login" class="btn btn-primary rounded-pill px-5 me-3">Login</a>
+                  <a routerLink="/signup" class="btn btn-outline-primary rounded-pill px-5">Sign Up Free</a>
+                </div>
+              </div>
+            </ng-template>
+
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<ng-template #loadingTemplate>
+  <div class="text-center py-5">
+    <div class="spinner-border text-primary" style="width: 4rem; height: 4rem;"></div>
+  </div>
+</ng-template>

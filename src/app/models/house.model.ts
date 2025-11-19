@@ -1,15 +1,23 @@
 export class House {
-  id?: number;
+  id!: number;
   title?: string;
-  price?: number;
+  price!: number;
   location!: string;
   description!: string;
   image!: string;
   ownerId!: number;
-sqft: any;
-baths: any;
-beds: any;
-isFavorite: any;
-type: string | undefined;
-bathrooms: any;
+  sqft?: number;
+  baths!: number;
+  beds?: number;
+  isFavorite?: boolean;
+  type?: 'sale' | 'rent';
+  propertyType?: string;
+  
+  // Only used in Property Details page
+  agent?: string;
+  phone?: string;
+  whatsapp?: string;
+  mapLink?: string;
+  comments?: any[];
+  showContact?: boolean;
 }

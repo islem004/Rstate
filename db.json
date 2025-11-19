@@ -10,7 +10,15 @@
       "sqft": 7200,
       "image": "https://images.unsplash.com/photo-1613490493576-7fde63acd811?ixlib=rb-4.0.3&auto=format&fit=crop&w=1350&q=80",
       "type": "sale",
-      "isFavorite": false
+      "propertyType": "villa",
+      "isFavorite": false,
+      "description": "Stunning contemporary seafront villa with direct private beach access and a 25-meter infinity pool overlooking the Mediterranean. Features smart-home automation, floor-to-ceiling glass walls, a rooftop terrace with jacuzzi, cinema room, and staff quarters. Built in 2024 with Italian marble and German fittings.",
+      "agent": "Ahmed Ben Ali",
+      "phone": "+21698123456",
+      "whatsapp": "21698123456",
+      "mapLink": "https://maps.google.com/?q=Gammarth+Tunis",
+      "comments": [],
+      "showContact": false
     },
     {
       "id": 2,
@@ -22,7 +30,15 @@
       "sqft": 3800,
       "image": "https://images.unsplash.com/photo-1600566753190-17f0baa2a6c3?ixlib=rb-4.0.3&auto=format&fit=crop&w=1350&q=80",
       "type": "rent",
-      "isFavorite": false
+      "propertyType": "Penthouse",
+      "isFavorite": false,
+      "description": "Exclusive full-floor penthouse on the top of the newest tower in Lac 2. 360° panoramic views of the lake and Tunis skyline. Private elevator, 4 en-suite bedrooms, huge 200 m² terrace with outdoor kitchen and jacuzzi. Fully furnished with Roche Bobois & Minotti pieces.",
+      "agent": "Sarah Jmal",
+      "phone": "+21655888999",
+      "whatsapp": "21655888999",
+      "mapLink": "https://maps.google.com/?q=Berges+du+Lac+Tunis",
+      "comments": [],
+      "showContact": false
     },
     {
       "id": 3,
@@ -34,7 +50,15 @@
       "sqft": 5100,
       "image": "https://images.unsplash.com/photo-1613977257365-aaae5a9817ff?ixlib=rb-4.0.3&auto=format&fit=crop&w=1350&q=80",
       "type": "sale",
-      "isFavorite": false
+      "propertyType": "villa",
+      "isFavorite": false,
+      "description": "Architect-designed masterpiece hanging on the cliffs of La Marsa with dramatic sea views from every room. Heated infinity pool, Japanese garden, wellness area with hammam & sauna, wine cellar, and a glass elevator connecting all 3 levels.",
+      "agent": "Karim Saghir",
+      "phone": "+21622445566",
+      "whatsapp": "21622445566",
+      "mapLink": "https://maps.google.com/?q=La+Marsa+Tunis",
+      "comments": [],
+      "showContact": false
     },
     {
       "id": 4,
@@ -46,7 +70,15 @@
       "sqft": 850,
       "image": "https://images.unsplash.com/photo-1600566752355-35792bedcfea?ixlib=rb-4.0.3&auto=format&fit=crop&w=1350&q=80",
       "type": "rent",
-      "isFavorite": false
+      "propertyType": "studio",
+      "isFavorite": false,
+      "description": "Brand-new designer studio right on Sousse Corniche with direct sea view. King-size bed, fully equipped kitchen, 55-inch smart TV, high-speed Wi-Fi, and a huge balcony perfect for sunset dinners. 24/7 security and private parking included.",
+      "agent": "Lina Majri",
+      "phone": "+21650111222",
+      "whatsapp": "21650111222",
+      "mapLink": "https://maps.google.com/?q=Corniche+Sousse",
+      "comments": [],
+      "showContact": false
     },
     {
       "id": 5,
@@ -58,27 +90,60 @@
       "sqft": 3900,
       "image": "https://images.unsplash.com/photo-1570129477492-45c003edd2be?ixlib=rb-4.0.3&auto=format&fit=crop&w=1350&q=80",
       "type": "sale",
-      "isFavorite": false
+      "propertyType": "villa",
+      "isFavorite": false,
+      "description": "Iconic Andalusian-style villa in the heart of Sidi Bou Said with the famous white walls and cobalt-blue doors that made the village famous. Restored in 2023 keeping all original features: zellige tiles, wooden painted ceilings, interior patio with fountain, and breathtaking sea views from the rooftop.",
+      "agent": "Mohamed Haddad",
+      "phone": "+21671234567",
+      "whatsapp": "21671234567",
+      "mapLink": "https://maps.google.com/?q=Sidi+Bou+Said",
+      "comments": [],
+      "showContact": false
     },
-    {
-      "id": 6,
-      "title": "Private Beachfront Palace",
-      "location": "Hammamet Yasmine",
-      "price": 3750000,
-      "beds": 8,
-      "baths": 7,
-      "sqft": 9500,
-      "image": "https://images.unsplash.com/photo-1580587771525-78b9cf3f9721?ixlib=rb-4.0.3&auto=format&fit=crop&w=1350&q=80",
-      "type": "sale",
-      "isFavorite": false
-    }
+   {
+  "id": 6,
+  "title": "Private Beachfront Palace",
+  "location": "Hammamet Yasmine",
+  "price": 3750000,
+  "beds": 8,
+  "baths": 7,
+  "sqft": 9500,
+  "image": "https://images.unsplash.com/photo-1599423300746-b62533397364?ixlib=rb-4.0.3&auto=format&fit=crop&w=1350&q=80",
+  "type": "sale",
+  "propertyType": "villa",
+  "isFavorite": false,
+  "description": "One-of-a-kind beachfront palace with 80 meters of private sandy beach. Three swimming pools (including indoor heated), private cinema, gym, tennis court, helipad, and 24/7 staff accommodation. Perfect for large families or luxury events.",
+  "agent": "Ali Oueslati",
+  "phone": "+21699888777",
+  "whatsapp": "21699888777",
+  "mapLink": "https://maps.google.com/?q=Yasmine+Hammamet",
+  "comments": [],
+  "showContact": false
+}
+
+
   ],
   "users": [
     {
       "id": 1,
-      "name": "Test User",
-      "email": "test@example.com",
-      "password": "123"
+      "name": "islemhassin",
+      "email": "islem@example.com",
+      "password": "123",
+      "role": "admin"
+    },
+    {
+      "id": 2,
+      "name": "titihassin",
+      "email": "titi@gmail.com",
+      "password": "titi123",
+      "role": "user"
+    },
+    {
+      "id": 3,
+      "name": "oussemahs",
+      "email": "oussemahs@gmail.com",
+      "password": "ouss123",
+      "role": "user"
     }
   ],
   "favorites": []
