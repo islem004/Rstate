@@ -1,74 +1,43 @@
 <nav class="navbar navbar-expand-lg navbar-light bg-white shadow-sm fixed-top">
   <div class="container">
-
-    <!-- Logo / Brand -->
     <a routerLink="/" class="navbar-brand fw-bold fs-3 text-primary d-flex align-items-center gap-2">
       <i class="bi bi-house-door-fill"></i> Rstate
     </a>
 
-    <!-- Mobile toggler -->
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
             aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
       <span class="navbar-toggler-icon"></span>
     </button>
 
-    <!-- Navbar content -->
     <div class="collapse navbar-collapse" id="navbarNav">
-      
-      <!-- Center menu -->
       <ul class="navbar-nav mx-auto">
-        <li class="nav-item">
-          <a routerLink="/" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}"
-             class="nav-link fw-medium">Home</a>
-        </li>
-        <li class="nav-item">
-          <a routerLink="/properties" routerLinkActive="active" class="nav-link fw-medium">Properties</a>
-        </li>
-        <li class="nav-item">
-          <a routerLink="/about" routerLinkActive="active" class="nav-link fw-medium">About</a>
-        </li>
-        <li class="nav-item">
-          <a routerLink="/contact" routerLinkActive="active" class="nav-link fw-medium">Contact</a>
-        </li>
+        <li class="nav-item"><a routerLink="/" class="nav-link">Home</a></li>
+        <li class="nav-item"><a routerLink="/properties" class="nav-link">Properties</a></li>
+        <li class="nav-item"><a routerLink="/about" class="nav-link">About</a></li>
+        <li class="nav-item"><a routerLink="/contact" class="nav-link">Contact</a></li>
       </ul>
 
-      <!-- Right side: Guest OR Logged-in user -->
       <div class="d-flex align-items-center gap-3">
-
-        <!-- WHEN USER IS LOGGED IN -->
         <ng-container *ngIf="isLoggedIn; else guestButtons">
           <div class="dropdown">
             <button class="btn p-0 border-0 dropdown-toggle" type="button" id="profileDropdown"
                     data-bs-toggle="dropdown" aria-expanded="false">
               <i class="bi bi-person-circle fs-2 text-primary"></i>
             </button>
-
             <ul class="dropdown-menu dropdown-menu-end shadow-lg mt-2" aria-labelledby="profileDropdown">
-              <li><a routerLink="/dashboard" class="dropdown-item py-2">
-                <i class="bi bi-person me-2"></i> My Profile
-              </a></li>
-              <li><a routerLink="/favorites" class="dropdown-item py-2">
-                <i class="bi bi-heart me-2"></i> My Favorites
-              </a></li>
-              <li><a routerLink="/my-properties" class="dropdown-item py-2">
-                <i class="bi bi-house-door me-2"></i> My Publications
-              </a></li>
+              <li><a routerLink="/dashboard/profile" class="dropdown-item py-2"><i class="bi bi-person me-2"></i> My Profile</a></li>
+              <li><a routerLink="/dashboard/favorites" class="dropdown-item py-2"><i class="bi bi-heart me-2"></i> My Favorites</a></li>
+              <li><a routerLink="/dashboard/publications" class="dropdown-item py-2"><i class="bi bi-house-door me-2"></i> My Publications</a></li>
               <li><hr class="dropdown-divider"></li>
-              <li>
-                <button class="dropdown-item py-2 text-danger" (click)="logout()">
-                  <i class="bi bi-box-arrow-right me-2"></i> Logout
-                </button>
-              </li>
+              <li><button class="dropdown-item py-2 text-danger" (click)="logout()"><i class="bi bi-box-arrow-right me-2"></i> Logout</button></li>
             </ul>
           </div>
         </ng-container>
 
-        <!-- WHEN USER IS NOT LOGGED IN -->
         <ng-template #guestButtons>
           <a routerLink="/login" class="btn btn-outline-primary rounded-pill px-4">Login</a>
           <a routerLink="/signup" class="btn btn-primary rounded-pill px-4">Sign Up</a>
         </ng-template>
-
       </div>
     </div>
   </div>
