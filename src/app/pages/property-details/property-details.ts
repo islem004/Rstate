@@ -5,12 +5,12 @@ import { HouseService } from '../../services/house.service';
 import { AuthService } from '../../services/auth.service';
 import { House } from '../../models/house.model';
 
+
 @Component({
   selector: 'app-property-details',
   standalone: true,
   imports: [CommonModule, RouterModule],
   templateUrl: './property-details.html',
-  styleUrls: ['./property-details.css']
 })
 export class PropertyDetailsComponent implements OnInit {
   house!: House;
@@ -34,4 +34,5 @@ export class PropertyDetailsComponent implements OnInit {
       });
     }
   }
+ 
 }

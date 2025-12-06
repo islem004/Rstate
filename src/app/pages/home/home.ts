@@ -24,7 +24,7 @@ export class HomeComponent implements OnInit, OnDestroy {
     location: '',
     propertyType: '',
     priceRange: '',
-    type: 'sale' as 'sale' | 'rent'
+    type: ''
   };
 
   constructor(
@@ -97,4 +97,5 @@ export class HomeComponent implements OnInit, OnDestroy {
   formatPrice(house: House): string {
     return house.type === 'rent' ? `$${house.price}/mo` : `$${house.price}`;
   }
+
 }

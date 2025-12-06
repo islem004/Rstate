@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { CanActivate, Router } from '@angular/router';
+import { CanActivate, Router, ActivatedRouteSnapshot, RouterStateSnapshot } from '@angular/router';
 import { AuthService } from '../services/auth.service';
 
 @Injectable({
@@ -12,13 +12,20 @@ export class AuthGuard implements CanActivate {
     private router: Router
   ) {}
 
-  canActivate(): boolean {
+  canActivate(
+    route: ActivatedRouteSnapshot,
+    state: RouterStateSnapshot
+  ): boolean {
+
     if (this.authService.isLoggedIn()) {
       return true;
     } else {
+      // ← هنا السحر: نحفظ الصفحة اللي كان عايز يروح ليها (مثلاً /properties/15)
+      localStorage.setItem('redirectAfterLogin', state.url);
+
+      // نرسلو للـ login
       this.router.navigate(['/login']);
       return false;
     }
   }
 }
-//besh nahmi page mteai mn el access ken el user ma3andouch login

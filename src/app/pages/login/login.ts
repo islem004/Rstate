@@ -15,7 +15,6 @@ export class LoginComponent {
 
   email = '';
   password = '';
-
   successMessage = '';
   errorMessage = '';
 
@@ -24,12 +23,16 @@ export class LoginComponent {
   onLogin() {
     this.auth.login(this.email, this.password).subscribe(user => {
       if (user) {
-        this.successMessage = 'Login successful! Welcome back 😄';
+        this.successMessage = 'Login successful! Welcome back';
         this.errorMessage = '';
 
-        // Optional: redirect after 1 second
+        // ← السحر هنا يا ملك
+        const redirectUrl = localStorage.getItem('redirectAfterLogin') || '/';
+        localStorage.removeItem('redirectAfterLogin'); // نمسحها باش ما تتكررش
+
+        // نرجّعو للصفحة اللي كان عايز يشوفها (مثلاً /properties/15)
         setTimeout(() => {
-          this.router.navigate(['/']);
+          this.router.navigate([redirectUrl]);
         }, 1000);
 
       } else {

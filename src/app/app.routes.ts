@@ -4,6 +4,7 @@ import { LoginComponent } from './pages/login/login';
 import {SignupComponent}from'./pages/signup/signup';
 import { PropertyDetailsComponent } from './pages/property-details/property-details';
 import {PropertiesComponent}from'./pages/properties/properties';
+import { UserDashboardComponent } from './pages/user-dashboard/user-dashboard';
 
 
 export const routes: Routes = [
@@ -12,6 +13,7 @@ export const routes: Routes = [
   {path: 'signup', component: SignupComponent},
   {path: 'property/:id', component: PropertyDetailsComponent},
   {path: 'properties', component: PropertiesComponent},
-  { path: '**', redirectTo: '' }
+  { path: '**', redirectTo: '' },
+  {path: 'dashboard', component: UserDashboardComponent}
 
 ];
