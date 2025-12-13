@@ -13,13 +13,13 @@ export class HouseService {
     return this.http.get<House[]>(this.apiUrl);
   }
 
-  getHouse(id: number): Observable<House> {
+  getHouse(id: string): Observable<House> {
     return this.http.get<House>(`${this.apiUrl}/${id}`);
   }
 
-  addHouse(house: House): Observable<House> {
-    return this.http.post<House>(this.apiUrl, house);
-  }
+  addHouse(house: Omit<House, 'id'>): Observable<House> {
+  return this.http.post<House>(this.apiUrl, house);
+}
 
   deleteHouse(id: number): Observable<any> {
     return this.http.delete(`${this.apiUrl}/${id}`);

@@ -1,8 +1,10 @@
+// home.component.ts - FULL READY-TO-PASTE (Favorites now persist on reload)
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { RouterModule, Router } from '@angular/router';
+import { RouterModule } from '@angular/router';
 import { Subject } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
 import { HouseService } from '../../services/house.service';
 import { FavoriteService } from '../../services/fav.service';
 import { House } from '../../models/house.model';
@@ -29,8 +31,7 @@ export class HomeComponent implements OnInit, OnDestroy {
 
   constructor(
     private houseService: HouseService,
-    private favService: FavoriteService,
-    private router: Router
+    private favService: FavoriteService
   ) {}
 
   ngOnInit(): void {
@@ -45,7 +46,9 @@ export class HomeComponent implements OnInit, OnDestroy {
 
   private checkUser() {
     const saved = localStorage.getItem('currentUser');
-    if (saved) this.userId = JSON.parse(saved)?.id ?? null;
+    if (saved) {
+      this.userId = JSON.parse(saved)?.id ?? null;
+    }
   }
 
   loadFeaturedHouses(): void {
@@ -53,6 +56,17 @@ export class HomeComponent implements OnInit, OnDestroy {
       next: (houses) => {
         this.featuredHouses = houses.slice(0, 6);
         this.loading = false;
+
+        // If user is logged in, load favorite status for each house
+        if (this.userId) {
+          this.featuredHouses.forEach(house => {
+            this.favService.isFavorite(this.userId!, house.id).pipe(
+              takeUntil(this.destroy$)
+            ).subscribe(isFav => {
+              house.isFavorite = isFav;
+            });
+          });
+        }
       },
       error: () => {
         this.loading = false;
@@ -67,9 +81,23 @@ export class HomeComponent implements OnInit, OnDestroy {
       return;
     }
 
-    house.isFavorite = !house.isFavorite;
-    const message = house.isFavorite ? 'Added to favorites ❤️' : 'Removed from favorites 💔';
-    this.showToast(message, 'primary');
+    if (house.isFavorite) {
+      // Remove favorite
+      this.favService.getFavoriteRecordId(this.userId, house.id).subscribe(favId => {
+        if (favId) {
+          this.favService.removeFavorite(favId).subscribe(() => {
+            house.isFavorite = false;
+            this.showToast('Removed from favorites 💔', 'primary');
+          });
+        }
+      });
+    } else {
+      // Add favorite
+      this.favService.addFavorite(this.userId, house.id).subscribe(() => {
+        house.isFavorite = true;
+        this.showToast('Added to favorites ❤️', 'primary');
+      });
+    }
   }
 
   showToast(message: string, type: 'primary' | 'danger' = 'primary') {
@@ -97,5 +125,4 @@ export class HomeComponent implements OnInit, OnDestroy {
   formatPrice(house: House): string {
     return house.type === 'rent' ? `$${house.price}/mo` : `$${house.price}`;
   }
-
 }

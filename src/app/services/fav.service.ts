@@ -1,9 +1,12 @@
-import { HttpClient } from "@angular/common/http";
-import { Injectable } from "@angular/core";
-import { Observable } from "rxjs";
+// favorite.service.ts - FULL READY-TO-PASTE
+import { Injectable } from '@angular/core';
+import { HttpClient } from '@angular/common/http';
+import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 
-@Injectable({ providedIn: 'root' })
+@Injectable({
+  providedIn: 'root'
+})
 export class FavoriteService {
   private apiUrl = 'http://localhost:4000/favorites';
 
@@ -13,22 +16,27 @@ export class FavoriteService {
     return this.http.get<any[]>(`${this.apiUrl}?userId=${userId}`);
   }
 
-  addFavorite(userId: number, houseId: number): Observable<any> {
-    return this.http.post<any>(this.apiUrl, { userId, houseId });
+  addFavorite(userId: number, houseId: any): Observable<any> {
+    return this.http.post<any>(this.apiUrl, {
+      userId,
+      houseId,
+      id: Date.now().toString() // json-server needs an id
+    });
   }
 
-  removeFavorite(favId: number): Observable<any> {
+  removeFavorite(favId: any): Observable<any> {
     return this.http.delete(`${this.apiUrl}/${favId}`);
   }
 
-  checkFavorite(userId: number, houseId: number): Observable<any[]> {
-    return this.http.get<any[]>(
-      `${this.apiUrl}?userId=${userId}&houseId=${houseId}`
+  isFavorite(userId: number, houseId: any): Observable<boolean> {
+    return this.http.get<any[]>(`${this.apiUrl}?userId=${userId}&houseId=${houseId}`).pipe(
+      map(favs => favs.length > 0)
     );
   }
-  isFavorite(userId: number, houseId: number): Observable<boolean> {
-    return this.checkFavorite(userId, houseId).pipe(
-      map(favs => favs.length > 0)
+
+  getFavoriteRecordId(userId: number, houseId: any): Observable<string | null> {
+    return this.http.get<any[]>(`${this.apiUrl}?userId=${userId}&houseId=${houseId}`).pipe(
+      map(favs => favs.length > 0 ? favs[0].id : null)
     );
   }
 }

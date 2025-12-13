@@ -1,0 +1,88 @@
+<section class="py-5 bg-light min-vh-100">
+  <div class="container">
+    <h2 class="mb-4">Add New Publication</h2>
+
+    <form [formGroup]="form" (ngSubmit)="submit()" class="card p-4 rounded-4 shadow-lg">
+      <!-- Title -->
+      <div class="mb-3">
+        <label class="form-label">Title</label>
+        <input formControlName="title" type="text" class="form-control" />
+      </div>
+
+      <!-- Location -->
+      <div class="mb-3">
+        <label class="form-label">Location</label>
+        <input formControlName="location" type="text" class="form-control" />
+      </div>
+
+      <!-- Price, Beds, Baths -->
+      <div class="row">
+        <div class="col-md-4 mb-3">
+          <label class="form-label">Price</label>
+          <input formControlName="price" type="number" class="form-control" />
+        </div>
+        <div class="col-md-4 mb-3">
+          <label class="form-label">Beds</label>
+          <input formControlName="beds" type="number" class="form-control" />
+        </div>
+        <div class="col-md-4 mb-3">
+          <label class="form-label">Baths</label>
+          <input formControlName="baths" type="number" class="form-control" />
+        </div>
+      </div>
+
+      <!-- Square Footage -->
+      <div class="mb-3">
+        <label class="form-label">Square Footage</label>
+        <input formControlName="sqft" type="number" class="form-control" />
+      </div>
+
+      <!-- Type and Property Type -->
+      <div class="row">
+        <div class="col-md-6 mb-3">
+          <label class="form-label">Type</label>
+          <select formControlName="type" class="form-select">
+            <option value="sale">Sale</option>
+            <option value="rent">Rent</option>
+          </select>
+        </div>
+        <div class="col-md-6 mb-3">
+          <label class="form-label">Property Type</label>
+          <input formControlName="propertyType" type="text" class="form-control" placeholder="e.g., Cottage, Villa" />
+        </div>
+      </div>
+
+      <!-- Image URL -->
+      <div class="mb-3">
+        <label class="form-label">Image URL</label>
+        <input formControlName="image" type="text" class="form-control" />
+      </div>
+
+      <!-- Description -->
+      <div class="mb-3">
+        <label class="form-label">Description</label>
+        <textarea formControlName="description" class="form-control" rows="4"></textarea>
+      </div>
+
+      <!-- Agent, Phone, WhatsApp, Map Link -->
+      <div class="mb-3">
+        <label class="form-label">Agent Name</label>
+        <input formControlName="agent" type="text" class="form-control" />
+      </div>
+      <div class="mb-3">
+        <label class="form-label">Phone</label>
+        <input formControlName="phone" type="text" class="form-control" />
+      </div>
+      <div class="mb-3">
+        <label class="form-label">WhatsApp</label>
+        <input formControlName="whatsapp" type="text" class="form-control" />
+      </div>
+      <div class="mb-3">
+        <label class="form-label">Google Maps Link</label>
+        <input formControlName="mapLink" type="text" class="form-control" />
+      </div>
+
+      <button class="btn btn-primary rounded-pill px-4" type="submit">Add Publication</button>
+    </form>
+  </div>
+</section>

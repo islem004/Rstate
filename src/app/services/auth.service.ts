@@ -42,4 +42,9 @@ export class AuthService {
   isLoggedIn(): boolean {
     return this.getCurrentUser() !== null;
   }
+  getUserId(): number | null {
+  const user = this.getCurrentUser();
+  return user ? user.id : null;
+}
+
 }

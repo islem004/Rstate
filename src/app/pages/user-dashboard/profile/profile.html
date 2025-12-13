@@ -1,14 +1,29 @@
-<section class="py-5 bg-light">
+<section class="py-5 bg-light" style="min-height: 80vh;">
   <div class="container">
     <h2 class="display-5 fw-light mb-5 text-center">Your Profile</h2>
 
     <div class="row justify-content-center">
       <div class="col-md-6">
         <div class="card shadow rounded-4 p-4">
+
+          <!-- Profile Picture -->
           <div class="text-center mb-4">
-            <img [src]="user.profilePicture" class="rounded-circle shadow-sm" alt="Profile Picture" width="120">
+            <img
+              [src]="user.profilePicture"
+              class="rounded-circle shadow-sm"
+              alt="Profile Picture"
+              width="120"
+              style="cursor:pointer"
+              (click)="downloadProfilePicture()"
+              title="Click to download"
+            >
+            <p class="small text-muted mt-2">Click on the picture to download</p>
+            
+            <!-- Upload new picture -->
+            <input type="file" class="form-control mt-2" (change)="onFileSelected($event)">
           </div>
 
+          <!-- Profile Form -->
           <form>
             <div class="mb-3">
               <label class="form-label fw-semibold">Name</label>
