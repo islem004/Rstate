@@ -1,43 +1,112 @@
 <nav class="navbar navbar-expand-lg navbar-light bg-white shadow-sm fixed-top">
   <div class="container">
+
+    <!-- LOGO -->
     <a routerLink="/" class="navbar-brand fw-bold fs-3 text-primary d-flex align-items-center gap-2">
       <i class="bi bi-house-door-fill"></i> Rstate
     </a>
 
-    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
-            aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+    <!-- TOGGLER -->
+    <button
+      class="navbar-toggler"
+      type="button"
+      data-bs-toggle="collapse"
+      data-bs-target="#navbarNav"
+      aria-controls="navbarNav"
+      aria-expanded="false"
+      aria-label="Toggle navigation">
       <span class="navbar-toggler-icon"></span>
     </button>
 
+    <!-- NAV CONTENT -->
     <div class="collapse navbar-collapse" id="navbarNav">
+
+      <!-- CENTER LINKS -->
       <ul class="navbar-nav mx-auto">
-        <li class="nav-item"><a routerLink="/" class="nav-link">Home</a></li>
-        <li class="nav-item"><a routerLink="/properties" class="nav-link">Properties</a></li>
-        <li class="nav-item"><a routerLink="/about" class="nav-link">About</a></li>
-        <li class="nav-item"><a routerLink="/contact" class="nav-link">Contact</a></li>
+        <li class="nav-item">
+          <a routerLink="/" class="nav-link" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">
+            Home
+          </a>
+        </li>
+
+        <li class="nav-item">
+          <a routerLink="/properties" class="nav-link" routerLinkActive="active">
+            Properties
+          </a>
+        </li>
+
+        <li class="nav-item">
+          <a routerLink="/contact" class="nav-link" routerLinkActive="active">
+            Contact
+          </a>
+        </li>
       </ul>
 
+      <!-- RIGHT SIDE -->
       <div class="d-flex align-items-center gap-3">
+
+        <!-- LOGGED IN -->
         <ng-container *ngIf="isLoggedIn; else guestButtons">
           <div class="dropdown">
-            <button class="btn p-0 border-0 dropdown-toggle" type="button" id="profileDropdown"
-                    data-bs-toggle="dropdown" aria-expanded="false">
+            <button
+              class="btn p-0 border-0 dropdown-toggle"
+              type="button"
+              id="profileDropdown"
+              data-bs-toggle="dropdown"
+              aria-expanded="false">
               <i class="bi bi-person-circle fs-2 text-primary"></i>
             </button>
+
+            <!-- DROPDOWN MENU -->
             <ul class="dropdown-menu dropdown-menu-end shadow-lg mt-2" aria-labelledby="profileDropdown">
-              <li><a routerLink="/dashboard/profile" class="dropdown-item py-2"><i class="bi bi-person me-2"></i> My Profile</a></li>
-              <li><a routerLink="/dashboard/favorites" class="dropdown-item py-2"><i class="bi bi-heart me-2"></i> My Favorites</a></li>
-              <li><a routerLink="/dashboard/publications" class="dropdown-item py-2"><i class="bi bi-house-door me-2"></i> My Publications</a></li>
+
+              <li>
+                <a routerLink="/dashboard/profile" class="dropdown-item">
+                  <i class="bi bi-person me-2"></i> My Profile
+                </a>
+              </li>
+
+              <li>
+                <a routerLink="/dashboard/favorites" class="dropdown-item">
+                  <i class="bi bi-heart me-2"></i> My Favorites
+                </a>
+              </li>
+
+              <li>
+                <a routerLink="/dashboard/publications" class="dropdown-item">
+                  <i class="bi bi-house-door me-2"></i> My Publications
+                </a>
+              </li>
+
+              <!-- ADMIN ONLY -->
+              <li *ngIf="isAdmin">
+                <a routerLink="/admin" class="dropdown-item fw-bold text-primary">
+                  <i class="bi bi-shield-lock me-2"></i> Admin Dashboard
+                </a>
+              </li>
+
               <li><hr class="dropdown-divider"></li>
-              <li><button class="dropdown-item py-2 text-danger" (click)="logout()"><i class="bi bi-box-arrow-right me-2"></i> Logout</button></li>
+
+              <li>
+                <button class="dropdown-item text-danger" (click)="logout()">
+                  <i class="bi bi-box-arrow-right me-2"></i> Logout
+                </button>
+              </li>
+
             </ul>
           </div>
         </ng-container>
 
+        <!-- GUEST -->
         <ng-template #guestButtons>
-          <a routerLink="/login" class="btn btn-outline-primary rounded-pill px-4">Login</a>
-          <a routerLink="/signup" class="btn btn-primary rounded-pill px-4">Sign Up</a>
+          <a routerLink="/login" class="btn btn-outline-primary rounded-pill px-4">
+            Login
+          </a>
+          <a routerLink="/signup" class="btn btn-primary rounded-pill px-4">
+            Sign Up
+          </a>
         </ng-template>
+
       </div>
     </div>
   </div>

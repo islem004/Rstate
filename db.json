@@ -198,7 +198,8 @@
       "id": "85da",
       "name": "Kaies Bouttakaya",
       "email": "kaies@gmail.com",
-      "password": "kaies123"
+      "password": "kaies123",
+      "banned": false
     }
   ],
   "favorites": [
@@ -231,11 +232,16 @@
       "id": "1765587467610",
       "userId": "2",
       "houseId": "2"
-    },
+    }
+  ],
+  "messages": [
     {
-      "id": "1765589986709",
-      "userId": "85da",
-      "houseId": "3"
+      "id": "0121",
+      "name": "titihassin",
+      "email": "titi@gmail.com",
+      "phone": "55685928",
+      "message": "hi im concerned about the owner of this bussinuess iwant them to contact me asap i have a very special offer ",
+      "date": "2025-12-13T21:57:53.872Z"
     }
   ]
 }

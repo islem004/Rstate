@@ -12,9 +12,9 @@ export class PublicationService {
 
   constructor(private http: HttpClient) {}
 
-  getByOwner(ownerId: number): Observable<House[]> {
-    return this.http.get<House[]>(`${this.baseUrl}?ownerId=${ownerId}`);
-  }
+getByOwner(ownerId: number): Observable<House[]> {
+  return this.http.get<House[]>(`${this.baseUrl}?ownerId=${ownerId}`);
+}
 
   getOne(id: any): Observable<House> {
     return this.http.get<House>(`${this.baseUrl}/${id}`);
@@ -30,5 +30,13 @@ export class PublicationService {
 
   delete(id: any): Observable<void> {
     return this.http.delete<void>(`${this.baseUrl}/${id}`);
+  }
+    // Add these inside the class
+  getAll(): Observable<House[]> {
+    return this.http.get<House[]>(this.baseUrl);
+  }
+
+  getContactMessages(): Observable<any[]> {
+    return this.http.get<any[]>('http://localhost:4000/messages');
   }
 }

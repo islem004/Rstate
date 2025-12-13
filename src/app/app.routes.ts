@@ -12,7 +12,7 @@ import { AddPublication } from './pages/user-dashboard/add-publication/add-publi
 import { EditPublication } from './pages/user-dashboard/edit-publication/edit-publication'; // Add this import
 import { AboutComponent } from './pages/about/about';
 import { ContactComponent } from './pages/contact/contact';
-
+import { AdminDashboardComponent } from './pages/admin-dashboard/admin-dashboard';
 export const routes: Routes = [
   { path: '', component: HomeComponent },
   { path: 'login', component: LoginComponent },
@@ -33,5 +33,6 @@ export const routes: Routes = [
   },
   {path: 'about', component: AboutComponent},
   {path: 'contact', component: ContactComponent},
+  {path: 'admin', component: AdminDashboardComponent},
   { path: '**', redirectTo: '' }
 ];

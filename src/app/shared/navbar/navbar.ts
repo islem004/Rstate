@@ -12,7 +12,12 @@ export class NavbarComponent {
   constructor(private router: Router) {}
 
   get isLoggedIn(): boolean {
-    return !!localStorage.getItem('currentUser') || !!localStorage.getItem('token');
+    return !!localStorage.getItem('currentUser');
+  }
+
+  get isAdmin(): boolean {
+    const user = JSON.parse(localStorage.getItem('currentUser') || 'null');
+    return user?.role === 'admin';
   }
 
   logout() {

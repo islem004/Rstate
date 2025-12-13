@@ -5,4 +5,5 @@ export class User {
   password!: string;
   phone!: string;
   role!: "user" | "admin";
+  banned!: boolean;
 }

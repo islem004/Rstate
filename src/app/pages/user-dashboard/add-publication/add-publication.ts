@@ -40,21 +40,29 @@ export class AddPublication {
     });
   }
 
-  submit(): void {
-    if (!this.auth.getUserId()) return;
-    if (this.form.invalid) return;
+submit(): void {
+  const user = this.auth.getCurrentUser();
 
-    const newHouse: Omit<House, 'id'> = {
-      ownerId: Number(this.auth.getUserId()),
-      ...this.form.value,
-      isFavorite: false,
-      favoriteId: undefined,
-      comments: [],
-      showContact: false
-    };
+  if (!user) return;
 
-    this.pubService.create(newHouse as House).subscribe(() => {
-      this.router.navigate(['/dashboard/publications']);
-    });
+  if (user.banned) {
+    alert('Your account is banned. You cannot add publications.');
+    return;
   }
+
+  if (this.form.invalid) return;
+
+  const newHouse: House = {
+    ...this.form.value,
+    ownerId: user.id,
+    isFavorite: false,
+    comments: [],
+    showContact: false
+  };
+
+  this.pubService.create(newHouse).subscribe(() => {
+    this.router.navigate(['/dashboard/publications']);
+  });
+}
+
 }

@@ -35,8 +35,16 @@ export class AuthService {
   }
 
   getCurrentUser(): User | null {
-    return JSON.parse(localStorage.getItem('currentUser') || 'null');
+  const user = JSON.parse(localStorage.getItem('currentUser') || 'null');
+
+  if (user?.banned) {
+    this.logout();
+    return null;
   }
+
+  return user;
+}
+
 
   // ← أضف السطر ده بس
   isLoggedIn(): boolean {

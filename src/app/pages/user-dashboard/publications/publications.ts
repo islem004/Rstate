@@ -48,17 +48,18 @@ export class PublicationsComponent implements OnInit {
     });
   }
 
-  deleteHouse(id: any): void {
-    if (!confirm('Are you sure you want to delete this publication?')) return;
+ deleteHouse(id: number) {
+  const user = this.auth.getCurrentUser();
 
-    this.pubService.delete(id).subscribe({
-      next: () => {
-        this.houses = this.houses.filter(h => h.id !== id);
-      },
-      error: (err) => {
-        console.error('Delete failed', err);
-        alert('Failed to delete.');
-      }
-    });
+  if (!user || user.banned) {
+    alert('Your account is banned.');
+    return;
   }
+
+  if (!confirm('Are you sure?')) return;
+
+  this.pubService.delete(id).subscribe(() => {
+    this.houses = this.houses.filter(h => h.id !== id);
+  });
+}
 }

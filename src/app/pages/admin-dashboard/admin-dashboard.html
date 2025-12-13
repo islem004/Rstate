@@ -1,0 +1,125 @@
+<section class="py-5 bg-light min-vh-100">
+  <div class="container">
+    <h2 class="display-5 fw-light text-center mb-5">Admin Dashboard</h2>
+
+    <!-- Tabs -->
+    <ul class="nav nav-pills justify-content-center mb-5 gap-3">
+      <li class="nav-item">
+        <button class="nav-link px-5 py-3 rounded-pill fw-bold" 
+                [class.active]="activeTab === 'users'" 
+                (click)="setTab('users')">
+          Users ({{ users.length }})
+        </button>
+      </li>
+      <li class="nav-item">
+        <button class="nav-link px-5 py-3 rounded-pill fw-bold" 
+                [class.active]="activeTab === 'publications'" 
+                (click)="setTab('publications')">
+          Publications ({{ publications.length }})
+        </button>
+      </li>
+      <li class="nav-item">
+        <button class="nav-link px-5 py-3 rounded-pill fw-bold" 
+                [class.active]="activeTab === 'messages'" 
+                (click)="setTab('messages')">
+          Messages ({{ messages.length }})
+        </button>
+      </li>
+    </ul>
+
+    <!-- Loading -->
+    <div *ngIf="loading" class="text-center py-5">
+      <div class="spinner-border text-primary" style="width: 4rem; height: 4rem;"></div>
+      <p class="mt-3 text-muted">Loading admin data...</p>
+    </div>
+
+    <!-- Users Tab -->
+    <div *ngIf="activeTab === 'users' && !loading" class="card shadow rounded-4 p-4 mb-5">
+      <h4 class="fw-bold mb-4">User Management</h4>
+      <div class="table-responsive">
+        <table class="table table-hover align-middle">
+          <thead class="table-light">
+            <tr>
+              <th>Name</th>
+              <th>Email</th>
+              <th>Role</th>
+              <th>Status</th>
+              <th>Action</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let user of users">
+              <td>{{ user.name }}</td>
+              <td>{{ user.email }}</td>
+              <td>
+                <span class="badge rounded-pill" 
+                      [class.bg-primary]="user.role === 'admin'"
+                      [class.bg-secondary]="user.role !== 'admin'">
+                  {{ user.role }}
+                </span>
+              </td>
+              <td>
+                <span class="badge rounded-pill" 
+                      [class.bg-success]="!user.banned"
+                      [class.bg-danger]="user.banned">
+                  {{ user.banned ? 'Banned' : 'Active' }}
+                </span>
+              </td>
+              <td>
+                <button class="btn btn-sm rounded-pill px-4"
+                        [class.btn-danger]="!user.banned"
+                        [class.btn-success]="user.banned"
+                        (click)="toggleBan(user)"
+                        [disabled]="user.role === 'admin'">
+                  {{ user.banned ? 'Unban' : 'Ban' }}
+                </button>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- Publications Tab -->
+    <div *ngIf="activeTab === 'publications' && !loading" class="card shadow rounded-4 p-4 mb-5">
+      <h4 class="fw-bold mb-4">All Publications</h4>
+      <div class="row g-4">
+        <div class="col-md-6 col-lg-4" *ngFor="let house of publications">
+          <div class="card border-0 shadow rounded-4 overflow-hidden position-relative hover-lift">
+            <img [src]="house.image" class="card-img-top" style="height: 260px; object-fit: cover;">
+            <div class="position-absolute top-0 end-0 p-3">
+              <button class="btn btn-white rounded-circle shadow-sm p-2" (click)="deletePublication(house.id)">
+                <i class="bi bi-trash-fill fs-4 text-danger"></i>
+              </button>
+            </div>
+            <div class="card-body p-4">
+              <h5 class="fw-bold mb-2">{{ house.title }}</h5>
+              <p class="text-muted small mb-2"><i class="bi bi-geo-alt-fill me-1"></i> {{ house.location }}</p>
+              <h4 class="text-primary fw-bold">${{ house.price | number }} 
+                <span class="fs-6 text-muted fw-normal" *ngIf="house.type === 'rent'">/month</span>
+              </h4>
+              <small class="text-muted">Owner: {{ house.agent || 'Unknown' }}</small>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Messages Tab -->
+    <div *ngIf="activeTab === 'messages' && !loading" class="card shadow rounded-4 p-4">
+      <h4 class="fw-bold mb-4">Contact Messages</h4>
+      <div *ngIf="messages.length === 0" class="text-center py-5 text-muted">
+        <i class="bi bi-envelope-open fs-1 mb-3"></i>
+        <p>No messages yet</p>
+      </div>
+      <div class="list-group">
+        <div *ngFor="let msg of messages" class="list-group-item mb-3 shadow-sm rounded-4">
+          <h6 class="fw-bold">{{ msg.name }} <small class="text-muted">({{ msg.email }})</small></h6>
+          <p class="text-muted small mb-1">{{ msg.phone || 'No phone provided' }}</p>
+          <p class="mb-1">{{ msg.message }}</p>
+          <small class="text-muted">Received: {{ msg.date || 'Recently' }}</small>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>

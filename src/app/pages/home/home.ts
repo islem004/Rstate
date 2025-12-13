@@ -75,30 +75,30 @@ export class HomeComponent implements OnInit, OnDestroy {
     });
   }
 
-  toggleFavorite(house: House): void {
-    if (!this.userId) {
-      this.showToast('Please login to save favorites', 'danger');
-      return;
-    }
-
-    if (house.isFavorite) {
-      // Remove favorite
-      this.favService.getFavoriteRecordId(this.userId, house.id).subscribe(favId => {
-        if (favId) {
-          this.favService.removeFavorite(favId).subscribe(() => {
-            house.isFavorite = false;
-            this.showToast('Removed from favorites 💔', 'primary');
-          });
-        }
-      });
-    } else {
-      // Add favorite
-      this.favService.addFavorite(this.userId, house.id).subscribe(() => {
-        house.isFavorite = true;
-        this.showToast('Added to favorites ❤️', 'primary');
-      });
-    }
+toggleFavorite(house: House): void {
+  if (!this.userId) {
+    this.showToast('Please login to save favorites', 'danger');
+    return;
   }
+
+  if (house.isFavorite) {
+    // Remove favorite
+    this.favService.getFavoriteRecordId(this.userId, house.id).subscribe(favId => {
+      if (favId) {
+        this.favService.removeFavorite(favId).subscribe(() => {
+          house.isFavorite = false;
+          this.showToast('Removed from favorites 💔', 'primary');
+        });
+      }
+    });
+  } else {
+    // Add favorite
+    this.favService.addFavorite(this.userId, house.id).subscribe(() => {
+      house.isFavorite = true;
+      this.showToast('Added to favorites ❤️', 'primary');
+    });
+  }
+}
 
   showToast(message: string, type: 'primary' | 'danger' = 'primary') {
     const toastEl = document.getElementById('favoriteToast');
